@@ -1,0 +1,5 @@
+dataset_repo_id: your_org/your_dataset
+policy: act
+output_dir: outputs/act
+batch_size: 32
+steps: 50000

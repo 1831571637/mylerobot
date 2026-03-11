@@ -1,0 +1,8 @@
+raw_data_dir: data/raw
+output_dir: data/processed
+image_key: observation.images.front
+state_key: observation.state
+action_key: action
+timestamp_key: timestamp
+episode_key: episode_id
+target_hz: 20

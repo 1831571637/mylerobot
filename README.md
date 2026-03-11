@@ -1,14 +1,38 @@
 # mylerobot
-# 目标：把 LeRobot 的硬件部分替换成你自己的机械臂 + 执行器平台
-# 保持不变：数据采集、回放、训练、推理流程尽量沿用 LeRobot
-# 必须新写：robot adapter、teleop adapter、processor、必要的 policy 输入扩展
-# 当前硬件：
-# 机械臂自由度
-# 灵巧手/夹爪自由度
-# 相机数量与型号
-# 是否有力觉/触觉
-# 底层控制接口：ROS1 / ROS2 / TCP / CAN / SDK
-# 当前目标任务：
-# 先跑通 teleop / record / replay
-# 再跑训练
-# 最后做真机部署
+
+面向自定义真机平台的 LeRobot 适配工程，目标是尽量保持 LeRobot 原始流程：
+
+`teleoperation -> record -> replay -> train -> inference`
+
+## 已补齐的工程骨架
+
+- `configs/`：机器人、数据、训练配置（全部 YAML）。
+- `src/mylerobot/robot/`：自定义 `CustomRobot` 适配器骨架（connect/disconnect/get_observation/send_action）。
+- `src/mylerobot/processors/`：`XYZRPYToJointProcessor` 占位实现（待接入 IK/SDK）。
+- `src/mylerobot/dataset/`：数据转换与完整性检查脚本。
+- `scripts/`：一键准备数据与生成训练命令脚本（ACT / Diffusion / PI05）。
+- `docs/practice_guide.md`：从原始数据到训练的实践步骤。
+
+## 快速开始
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
+
+准备数据并检查：
+
+```bash
+scripts/prepare_dataset.sh
+```
+
+生成训练命令：
+
+```bash
+scripts/train_act.sh
+scripts/train_diffusion.sh
+scripts/train_pi05.sh
+```
+
+> 注意：脚本只生成 `lerobot-train` 命令模板。你需要在本机安装并配置好 `lerobot` 环境，然后执行生成的命令。
